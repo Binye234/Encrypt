@@ -9,7 +9,7 @@ namespace EncryptFile
     static public class EncryptFile
     {
         //密钥
-        private static byte[] _KEY = Encoding.UTF8.GetBytes( "12345678");
+        private static byte[] _KEY = Encoding.UTF8.GetBytes( ".s4[41xc");
         private static byte[] _IV= Encoding.UTF8.GetBytes("sdfg4563");
         /// <summary>
         /// 加密
