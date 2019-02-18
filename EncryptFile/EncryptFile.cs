@@ -9,8 +9,8 @@ namespace EncryptFile
     static public class EncryptFile
     {
         //密钥
-        private static byte[] _KEY = Encoding.UTF8.GetBytes( ".s4[41xc");
-        private static byte[] _IV= Encoding.UTF8.GetBytes("sdfg4563");
+        private static byte[] _KEY = Encoding.UTF8.GetBytes(".s4[41xc");
+        private static byte[] _IV = Encoding.UTF8.GetBytes("sdfg4563");
         /// <summary>
         /// 加密
         /// </summary>
@@ -29,7 +29,7 @@ namespace EncryptFile
                     byte[] buff = new byte[1024];
                     int count = readFs.Read(buff, 0, buff.Length);
                     while (count != 0)
-                    {    
+                    {
                         cs.Write(buff, 0, count);
                         count = readFs.Read(buff, 0, buff.Length);
                     }
@@ -41,7 +41,7 @@ namespace EncryptFile
         /// </summary>
         /// <param name="newPath">密文路径</param>
         /// <param name="oldPath">明文路径</param>
-        static public void DeEncryptFile(string newPath,string oldPath)
+        static public void DeEncryptFile(string newPath, string oldPath)
         {
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             des.Key = _KEY;
@@ -59,6 +59,37 @@ namespace EncryptFile
                         count = cs.Read(buff, 0, buff.Length);
                     }
                 }
+            }
+        }
+        /// <summary>
+        /// 判断是否为Excel
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static public bool IsExcel(string path)
+        {
+            try
+            {
+                string tmp = "";
+                using(FileStream fs=new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    for(int i = 0; i < 2; i++)
+                    {
+                        tmp += fs.ReadByte().ToString();
+                    }
+                    if(tmp== "208207")  //xlsx,zip,pptx,mmap,zip文件开头208207
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }
